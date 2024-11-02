@@ -30,3 +30,9 @@ jobs:
     # Runs a single command using the runners shell
     - name: Send greeting
       run: echo "Hello ${{ inputs.name }}"
+    - env:
+          EVENT_CONTEXT: ${{ toJSON(github.event) }}
+      run: |
+          echo EVENT_CONTEXT: $EVENT_CONTEXT
+          echo ****************
+          echo ${{ github.event }}
