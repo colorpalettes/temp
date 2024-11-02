@@ -1,6 +1,6 @@
 # This is a workflow which contains sample code for use.
 
-name: CI
+name: Sample Code
 
 # Controls when the workflow will run
 on:
