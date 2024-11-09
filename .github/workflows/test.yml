@@ -75,4 +75,4 @@ jobs:
      - name: ALL FOR LOVE ":heart:"
        run: |
         echo "LOVE!!! :heart: :heart: :heart:" >> $GITHUB_STEP_SUMMARY
-        printf '%s\n %s' "$hooray" "$hooray"
+        echo "### Hello world! :rocket:"
