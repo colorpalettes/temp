@@ -8,7 +8,7 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      local_mx:
+      locale_mx:
         description: "The locales to run tests"
         default: "jp,us"
       name:
@@ -37,7 +37,8 @@ jobs:
          name: ALL FOR LOVE
          run: |
           # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
-          echo "github.event.inputs.locale_mx: ${{inputs.locale_mx}}"
+          echo "inputs.locale_mx: ${{inputs.locale_mx}}"
+          echo "github.event.inputs.locale_mx: ${{github.event.inputs.locale_mx}}"
        - name: Check out the repository to the runner
          uses: actions/checkout@v4
        - name: List the root folder of repo
