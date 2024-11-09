@@ -83,6 +83,7 @@ jobs:
       run: |
         echo "UP_VAR02=222" >> $GITHUB_ENV
         echo "UP_VAR03=333" >> $GITHUB_OUTPUT
+        echo "^^^^^^^^^^^^^^^^^^^^^^"
         env
         echo "************************"
         echo "UP_VAR01: $UP_VAR01"
@@ -92,6 +93,7 @@ jobs:
         DOWN_VAR02: $UP_VAR02
         DOWN_VAR03: ${{steps.up-step.outputs.UP_VAR03}}
       run: |
+        echo "^^^^^^^^^^^^^^^^^^^^^^"
         env
         echo "*************************"
         echo "UP_VAR01: $UP_VAR01"
