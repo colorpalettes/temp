@@ -56,7 +56,7 @@ jobs:
     - name: Example of adding a job summary
       run: echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
     - run: |
-        echo "Good! :+1:\nLaugh! :laugh:\nEyes! :eyes:" >> $GITHUB_STEP_SUMMARY
+        echo -e "Good! :+1:\nLaugh! :laugh:\nEyes! :eyes:" >> $GITHUB_STEP_SUMMARY
     - name: Generate list using Markdown
       run: |
         echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
@@ -75,3 +75,4 @@ jobs:
      - name: ALL FOR LOVE ":heart:"
        run: |
         echo "LOVE!!! :heart: :heart: :heart:" >> $GITHUB_STEP_SUMMARY
+        printf '%s\n %s' "$hooray" "$hooray"
