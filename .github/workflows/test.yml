@@ -29,7 +29,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        locale_mx: ${{ github.event.inputs.locale_mx}}
+        locale_mx: ${{ toJson(github.event.inputs.locale_mx)}}
     # Steps represent a sequence of tasks that will be executed as part of the job
     ### temp
     steps:
