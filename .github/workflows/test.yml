@@ -29,8 +29,8 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        locale_mx: ${{ fromJSON(github.event.inputs.locale_mx)}}
-        # locale_mx: ${{inputs.locale_mx}}
+        # locale_mx: ${{ fromJSON(github.event.inputs.locale_mx)}}
+        locale_mx: ${{ fromJSON(format('[{0}]', inputs.locale_mx || '"fr","ko"')) }}
     # Steps represent a sequence of tasks that will be executed as part of the job
     ### temp
     steps:
