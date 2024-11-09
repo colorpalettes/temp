@@ -8,6 +8,9 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
+      local_mx:
+        description: "The locales to run tests"
+        default: "jp,us"
       name:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Person to greet'
@@ -24,9 +27,21 @@ jobs:
   greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
+    strategy:
+      matrix:
+        locale_mx: ${{ github.event.inputs.locale_mx}}
     # Steps represent a sequence of tasks that will be executed as part of the job
+    ### temp
     steps:
+       - id: temp_step
+         name: ALL FOR LOVE
+         run: |
+          echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
+       - name: Check out the repository to the runner
+         uses: actions/checkout@v4
+       - name: List the root folder of repo
+         run: ls .
+    ### temp
     # Runs a single command using the runners shell
     # - name: Send greeting
     #   run: echo "Hello ${{ inputs.name }}"
@@ -76,29 +91,29 @@ jobs:
   #      run: |
   #       echo "LOVE!!! :heart: :heart: :heart:" >> $GITHUB_STEP_SUMMARY
   #       echo "### Hello world! :rocket:"
-    - id: up-step
-      name: This step is used to create variables
-      env: 
-        UP_VAR01: 111
-      run: |
-        echo "UP_VAR02=222" >> $GITHUB_ENV
-        echo "UP_VAR03=333" >> $GITHUB_OUTPUT
-        echo "^^^^^^^^^^^^^^^^^^^^^^"
-        env
-        echo "************************"
-        echo "UP_VAR01: $UP_VAR01"
-    - name: down-step
-      env: 
-        DOWN_VAR01: $UP_VAR01
-        DOWN_VAR02: $UP_VAR02
-        DOWN_VAR03: ${{steps.up-step.outputs.UP_VAR03}}
-      run: |
-        echo "^^^^^^^^^^^^^^^^^^^^^^"
-        env
-        echo "*************************"
-        echo "UP_VAR01: $UP_VAR01"
-        echo "UP_VAR02: $UP_VAR02"
-        echo "UP_VAR03: ${{steps.up-step.outputs.UP_VAR03}}"
-        echo "DOWN_VAR01: $DOWN_VAR01"
-        echo "DOWN_VAR02: $DOWN_VAR02"
-        echo "DOWN_VAR03: $DOWN_VAR03"
+    # - id: up-step
+    #   name: This step is used to create variables
+    #   env: 
+    #     UP_VAR01: 111
+    #   run: |
+    #     echo "UP_VAR02=222" >> $GITHUB_ENV
+    #     echo "UP_VAR03=333" >> $GITHUB_OUTPUT
+    #     echo "^^^^^^^^^^^^^^^^^^^^^^"
+    #     env
+    #     echo "************************"
+    #     echo "UP_VAR01: $UP_VAR01"
+    # - name: down-step
+    #   env: 
+    #     DOWN_VAR01: $UP_VAR01
+    #     DOWN_VAR02: $UP_VAR02
+    #     DOWN_VAR03: ${{steps.up-step.outputs.UP_VAR03}}
+    #   run: |
+    #     echo "^^^^^^^^^^^^^^^^^^^^^^"
+    #     env
+    #     echo "*************************"
+    #     echo "UP_VAR01: $UP_VAR01"
+    #     echo "UP_VAR02: $UP_VAR02"
+    #     echo "UP_VAR03: ${{steps.up-step.outputs.UP_VAR03}}"
+    #     echo "DOWN_VAR01: $DOWN_VAR01"
+    #     echo "DOWN_VAR02: $DOWN_VAR02"
+    #     echo "DOWN_VAR03: $DOWN_VAR03"
