@@ -53,10 +53,10 @@ jobs:
     #     printf '%s\n' "$action_state" # This will output 'yellow'
     #     echo ****************
     #     printenv
-    - name: Example of adding a job summary
+    - name: Example of adding a job summary ":rocket:"
       run: echo "### Hello world! :rocket:" >> $GITHUB_STEP_SUMMARY
     - run: |
-        echo ":+1: :laugh: :eyes:" >> $GITHUB_STEP_SUMMARY
+        echo "Good! :+1: Laugh! ":laugh:" Eyes! :eyes:" >> $GITHUB_STEP_SUMMARY
     - name: Generate list using Markdown
       run: |
         echo "This is the lead in sentence for the list" >> $GITHUB_STEP_SUMMARY
@@ -71,6 +71,6 @@ jobs:
   greet2:
     runs-on: ubuntu-latest
     steps:
-     - name: ALL FOR LOVE
+     - name: ALL FOR LOVE ":heart:"
        run: |
         echo "LOVE!!! :heart: :heart: :heart:" >> $GITHUB_STEP_SUMMARY
