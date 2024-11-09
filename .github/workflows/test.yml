@@ -27,16 +27,17 @@ jobs:
   greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        locale_mx: ${{ toJson(github.event.inputs.locale_mx)}}
+    # strategy:
+    #   matrix:
+    #     locale_mx: ${{ toJson(github.event.inputs.locale_mx)}}
     # Steps represent a sequence of tasks that will be executed as part of the job
     ### temp
     steps:
        - id: temp_step
          name: ALL FOR LOVE
          run: |
-          echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
+          # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
+          echo "github.event.inputs.locale_mx: ${{github.event.inputs.locale_mx}}"
        - name: Check out the repository to the runner
          uses: actions/checkout@v4
        - name: List the root folder of repo
