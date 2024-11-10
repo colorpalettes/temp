@@ -44,8 +44,12 @@ jobs:
          env:
             step_env_var: '{"status":"success"}'
          run: |
-           vartmp = "abc"
-           echo $vartmp
+          the_secret=$((RANDOM))
+          echo "::add-mask::$the_secret"
+          echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
+       - name: Use that secret output (protected by a mask)
+         run: |
+          echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
           # echo "fromJSON: ${{ fromJSON(env.workflow_env_var)}}"
           # echo "fromJSON: ${{ fromJSON(env.job_env_var)}}"
           # echo "toJSON: ${{toJSON(env.step_env_var)}}"
