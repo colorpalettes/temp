@@ -43,11 +43,11 @@ jobs:
           # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
           # echo "inputs.locale_mx: ${{inputs.locale_mx}}"  #output: jp,us
           # echo "github.event.inputs.locale_mx: ${{github.event.inputs.locale_mx}}" #output: jp,us
-          var1=[1,2,3]
+          var2=[1,2,3]
           echo "fromJSON: ${{ fromJSON(var1)}}"
           echo "toJSON: ${{toJSON(var1)}}"
        - name: next step
-         run: echo $var1
+         run: echo $var2
        # - name: Check out the repository to the runner
        #   uses: actions/checkout@v4
        # - name: List the root folder of repo
