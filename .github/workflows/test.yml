@@ -42,7 +42,7 @@ jobs:
          env:
             step_env_var: '"status":"success"'
          run: |
-          echo "fromJSON: ${{ fromJSON(greet.env.job_env_var)}}"
+          echo "fromJSON: ${{ fromJSON(jobs.greet.env.job_env_var)}}"
           echo "toJSON: ${{toJSON(env.step_env_var)}}"
           #
           # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
