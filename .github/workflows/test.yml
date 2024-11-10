@@ -28,6 +28,8 @@ jobs:
   greet:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    env:
+        job_env_var: '["a","a"]'
     strategy:
       matrix:
         # locale_mx: ${{ fromJSON(github.event.inputs.locale_mx)}}
@@ -38,14 +40,14 @@ jobs:
        - id: temp_step
          name: ALL FOR LOVE
          env:
-            var1: "[1,2,3]"
+            step_env_var: '"status":"success"'
          run: |
+          echo "fromJSON: ${{ fromJSON(greet.env.job_env_var)}}"
+          echo "toJSON: ${{toJSON(env.step_env_var)}}"
+          #
           # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
           # echo "inputs.locale_mx: ${{inputs.locale_mx}}"  #output: jp,us
           # echo "github.event.inputs.locale_mx: ${{github.event.inputs.locale_mx}}" #output: jp,us
-          var2=[1,2,3]
-          echo "fromJSON: ${{ fromJSON(env.var1)}}"
-          echo "toJSON: ${{toJSON(env.var1)}}"
        - name: next step
          run: echo $var2
        # - name: Check out the repository to the runner
