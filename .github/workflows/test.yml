@@ -10,10 +10,10 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      locale_mx:
-        description: "The locales to run tests"
-        # default: '["jp","cn"]'
-        default: '"jp","cn"'
+      # locale_mx:
+      #   description: "The locales to run tests"
+      #   # default: '["jp","cn"]'
+      #   default: '"jp","cn"'
       name:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Person to greet'
@@ -49,6 +49,9 @@ jobs:
           echo $the_secret
           echo "::add-mask::$the_secret"
           echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
+          #
+          the_secret2=123456
+          echo $the_secret2
        - name: Use that secret output (protected by a mask)
          run: |
           echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
