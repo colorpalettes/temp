@@ -47,6 +47,9 @@ jobs:
           echo "fromJSON: ${{ fromJSON(env.workflow_env_var)}}"
           echo "fromJSON: ${{ fromJSON(env.job_env_var)}}"
           echo "toJSON: ${{toJSON(env.step_env_var)}}"
+          echo "workflow_env_var: $workflow_env_var"
+          echo "job_env_var: $job_env_var"
+          echo "step_env_var: $step_env_var"
           #
           # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
           # echo "inputs.locale_mx: ${{inputs.locale_mx}}"  #output: jp,us
