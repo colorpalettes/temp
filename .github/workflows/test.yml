@@ -79,8 +79,8 @@ jobs:
           # echo "matrix.locale_mx: ${{ matrix.locale_mx }}"
           # echo "inputs.locale_mx: ${{inputs.locale_mx}}"  #output: jp,us
           # echo "github.event.inputs.locale_mx: ${{github.event.inputs.locale_mx}}" #output: jp,us
-       - name: next step
-         run: echo $var2
+       # - name: next step
+       #   run: echo $var2
        # - name: Check out the repository to the runner
        #   uses: actions/checkout@v4
        # - name: List the root folder of repo
