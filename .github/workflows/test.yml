@@ -36,10 +36,11 @@ jobs:
   job2:
     needs: job1
     runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
+    # strategy:
+    #   matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
     steps:
-      - run: echo "Matrix - Project ${{ matrix.project }}, Config ${{ matrix.config }}"
+      - run: echo ${{ fromJSON(needs.job1.outputs.matrix) }}
+      # - run: echo "Matrix - Project ${{ matrix.project }}, Config ${{ matrix.config }}"
   # # This workflow contains a single job called "greet"
   # greet:
   #   # The type of runner that the job will run on
