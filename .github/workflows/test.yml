@@ -26,35 +26,49 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  # This workflow contains a single job called "greet"
-  greet:
-    # The type of runner that the job will run on
+  job1:
     runs-on: ubuntu-latest
-    env:
-        job_env_var: true
-    strategy:
-      matrix:
-        # locale_mx: ${{ fromJSON(github.event.inputs.locale_mx)}}
-        locale_mx: ${{ fromJSON(format('[{0}]', inputs.locale_mx || '"fr","ko"')) }}
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    ### temp
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
     steps:
-       - id: temp_step
-         name: ALL FOR LOVE
-         env:
-            step_env_var: '{"status":"success"}'
-         run: |
-          the_secret=$((RANDOM))
-          echo $((RANDOM))
-          echo $the_secret
-          echo "::add-mask::$the_secret"
-          echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
-          #
-          the_secret2=123456
-          echo $the_secret2
-       - name: Use that secret output (protected by a mask)
-         run: |
-          echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
+      - id: set-matrix
+        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+  job2:
+    needs: job1
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJSON(needs.job1.outputs.matrix) }}
+    steps:
+      - run: echo "Matrix - Project ${{ matrix.project }}, Config ${{ matrix.config }}"
+  # # This workflow contains a single job called "greet"
+  # greet:
+  #   # The type of runner that the job will run on
+  #   runs-on: ubuntu-latest
+  #   env:
+  #       job_env_var: true
+  #   strategy:
+  #     matrix:
+  #       # locale_mx: ${{ fromJSON(github.event.inputs.locale_mx)}}
+  #       locale_mx: ${{ fromJSON(format('[{0}]', inputs.locale_mx || '"fr","ko"')) }}
+  #   # Steps represent a sequence of tasks that will be executed as part of the job
+  #   ### temp
+  #   steps:
+  #      - id: temp_step
+  #        name: ALL FOR LOVE
+  #        env:
+  #           step_env_var: '{"status":"success"}'
+  #        run: |
+  #         the_secret=$((RANDOM))
+  #         echo $((RANDOM))
+  #         echo $the_secret
+  #         echo "::add-mask::$the_secret"
+  #         echo "secret-number=$the_secret" >> "$GITHUB_OUTPUT"
+  #         #
+  #         the_secret2=123456
+  #         echo $the_secret2
+  #      - name: Use that secret output (protected by a mask)
+  #        run: |
+  #         echo "the secret number is ${{ steps.sets-a-secret.outputs.secret-number }}"
           # echo "fromJSON: ${{ fromJSON(env.workflow_env_var)}}"
           # echo "fromJSON: ${{ fromJSON(env.job_env_var)}}"
           # echo "toJSON: ${{toJSON(env.step_env_var)}}"
