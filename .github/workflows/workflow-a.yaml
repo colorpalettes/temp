@@ -6,15 +6,15 @@ on:
     inputs:
       locale_mx:
       description: "The locales to run tests"
-      default: '["jp","cn"]'
-	  
+      default: '["jp","cn"]
+
 jobs:	  
   greet:
     runs-on: ubuntu-latest
     strategy:
       matrix:
         locale_mx: ${{ fromJSON(github.event.inputs.locale_mx)}}
-		
+
   call-workflow-passing-data:
     uses: ./.github/workflows/workflow-b.yaml
     with:
