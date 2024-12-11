@@ -20,4 +20,4 @@ jobs:
     uses: ./.github/workflows/workflow-b.yaml
     with:
       config-path: ${{ matrix.locale_mx }}
-      env_variables: ${{ fromJSON(format('{0}', matrix.locale_mx)) }}${{ inputs.env_variables }}
+      env_variables: ${{ format('{0}', matrix.locale_mx) }}${{ inputs.env_variables }}
