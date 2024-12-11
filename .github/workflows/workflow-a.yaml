@@ -14,8 +14,6 @@ jobs:
     strategy:
       matrix:
         locale_mx: ${{ fromJSON(github.event.inputs.locale_mx) }}
-
-  call-workflow-passing-data:
     uses: ./.github/workflows/workflow-b.yaml
     with:
       config-path: ${{ matrix.locale_mx }}
