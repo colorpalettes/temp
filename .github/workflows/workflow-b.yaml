@@ -12,7 +12,7 @@ jobs:
   triage:
     runs-on: ubuntu-latest
     steps:
-    - name: Echo info
-	  shell: bash
-	  run: |
-	    echo {{ inputs.config-path }}
+      - name: Echo info
+	shell: bash
+	run: |
+          echo {{ inputs.config-path }}
