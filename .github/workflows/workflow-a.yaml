@@ -7,6 +7,10 @@ on:
       locale_mx:
         description: "The locales to run tests"
         default: '["jp","cn"]'
+      env_variables:
+        description: "Comma-separated list of environment variables (e.g., ENV1=WHATEVER,ENV2=WHAT EVER)"
+        type: string
+        default: "PW_TIMEOUT=60,SAS_TEST2_USER=etldemo,DU_UNDER_TEST=sas-information-catalog-app,SAS_TEST_USERNAMES=[DMT] ETL Guest Account:SAS etlguest User,SAS_TEST2_USERNAMES=[DMT] ETL Demo Account:SAS etldemo User,SAS_ADMIN_USERNAMES=[DMT] ETL Adm Account:SAS etladm User"
 
 jobs:	  
   greet:
@@ -16,3 +20,4 @@ jobs:
     uses: ./.github/workflows/workflow-b.yaml
     with:
       config-path: ${{ matrix.locale_mx }}
+      env_variables: ${{ inputs.env_variables }}
