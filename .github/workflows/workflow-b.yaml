@@ -15,4 +15,4 @@ jobs:
       - name: Echo outputs from last job
         shell: bash
         run: |
-          echo {{ inputs.config-path }}
+          echo ${{ inputs.config-path }}
