@@ -6,7 +6,7 @@ on:
     inputs:
       locale_mx:
         description: "The locales to run tests"
-        default: '["jp","cn"]'
+        default: '"jp","cn"'
       env_variables:
         description: "Comma-separated list of environment variables (e.g., ENV1=WHATEVER,ENV2=WHAT EVER)"
         type: string
@@ -16,7 +16,7 @@ jobs:
   greet:
     strategy:
       matrix:
-        locale_mx: ${{ fromJSON(github.event.inputs.locale_mx) }}
+        locale_mx: ${{ fromJSON(format('[{0}]', inputs.locale_mx || '"fr","ko"')) }}
     uses: ./.github/workflows/workflow-b.yaml
     with:
       config-path: ${{ matrix.locale_mx }}
