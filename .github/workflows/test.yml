@@ -37,8 +37,8 @@ jobs:
            { \
             echo "## Shortened_name"; \
             echo "---"; \
-            echo ":earth_americas: Locale(s): "; \
-            echo ":globe_with_meridians: URL: "; \
+            echo ":earth_americas: **Locale(s):** "; \
+            echo ":globe_with_meridians: **URL:** "; \
             echo ":whale2: Docker image: "; \
             echo ":palm_tree: Environment vars: "; \
             echo ":email: Recipient(s): "; \
