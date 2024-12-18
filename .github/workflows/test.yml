@@ -33,14 +33,25 @@ jobs:
       abc: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
-        run: echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
-  job2:
-    needs: job1
-    runs-on: ubuntu-latest
-    strategy:
-      matrix: ${{ fromJSON(needs.job1.outputs.abc) }}
-    steps:
-      - run: echo "Matrix - Project ${{ matrix.project }}, Config ${{ matrix.config }}"
+        run: |
+           { \
+            echo "## $shortened_name"; \
+            echo "---"; \
+            echo ":earth_americas: Locale(s): "; \
+            echo ":globe_with_meridians: URL: "; \
+            echo ":whale2: Docker image: "; \
+            echo ":palm_tree: Environment vars: "; \
+            echo ":email: Recipient(s): "; \
+           }  >> "$GITHUB_STEP_SUMMARY"
+
+        # echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
+  # job2:
+  #   needs: job1
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     matrix: ${{ fromJSON(needs.job1.outputs.abc) }}
+  #   steps:
+  #     - run: echo "Matrix - Project ${{ matrix.project }}, Config ${{ matrix.config }}"
   # # This workflow contains a single job called "greet"
   # greet:
   #   # The type of runner that the job will run on
