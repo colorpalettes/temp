@@ -40,7 +40,7 @@ jobs:
             echo ":earth_americas: **Locale(s):** https://www.google.com"; \
             echo ':globe_with_meridians: **URL:** $( ${{ env.workflow_env_var }} )'; \
             echo ":whale2: Docker image: jinghui.hou@sas.com"; \
-            echo ":palm_tree: Environment vars: ``jinghui.hou@sas.com``"; \
+            echo ":palm_tree: Environment vars: \`jinghui.hou@sas.com\`"; \
             echo ':email: Recipient(s): `jinghui.hou@sas.com,abc@sas.com`'; \
            }  >> "$GITHUB_STEP_SUMMARY"
 
