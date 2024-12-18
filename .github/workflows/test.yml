@@ -6,7 +6,7 @@ run-name: manual workflow run-name @${{ github.actor }}
 # Controls when the action will run. Workflow runs when manually triggered using the UI
 # or API.
 env:
-  workflow_env_var: 3
+  workflow_env_var: https://www.google.com
 on:
   workflow_dispatch:
     # Inputs the workflow accepts.
@@ -38,9 +38,9 @@ jobs:
             echo "## Shortened_name"; \
             echo "---"; \
             echo ":earth_americas: **Locale(s):** https://www.google.com"; \
-            echo ':globe_with_meridians: **URL:** `https://www.google.com`'; \
+            echo ":globe_with_meridians: **URL:** ${{ env.workflow_env_var }}"; \
             echo ":whale2: Docker image: jinghui.hou@sas.com"; \
-            echo ':palm_tree: Environment vars: `jinghui.hou@sas.com`'; \
+            echo ":palm_tree: Environment vars: $(jinghui.hou@sas.com)"; \
             echo ':email: Recipient(s): `jinghui.hou@sas.com,abc@sas.com`'; \
            }  >> "$GITHUB_STEP_SUMMARY"
 
