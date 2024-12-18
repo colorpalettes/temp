@@ -39,9 +39,9 @@ jobs:
             echo "---"; \
             echo ":earth_americas: **Locale(s):** "; \
             echo ":globe_with_meridians: **URL:** "; \
-            echo ":whale2: Docker image: "; \
-            echo ":palm_tree: Environment vars: "; \
-            echo ":email: Recipient(s): "; \
+            echo ":whale2: Docker image: jinghui.hou@sas.com"; \
+            echo ":palm_tree: Environment vars: `jinghui.hou@sas.com`"; \
+            echo ":email: Recipient(s): `jinghui.hou@sas.com,abc@sas.com`"; \
            }  >> "$GITHUB_STEP_SUMMARY"
 
         # echo "matrix={\"include\":[{\"project\":\"foo\",\"config\":\"Debug\"},{\"project\":\"bar\",\"config\":\"Release\"}]}" >> $GITHUB_OUTPUT
