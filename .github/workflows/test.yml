@@ -37,10 +37,10 @@ jobs:
            { \
             echo "## Shortened_name"; \
             echo "---"; \
-            echo ":earth_americas: **Locale(s):** "; \
-            echo ":globe_with_meridians: **URL:** "; \
+            echo ":earth_americas: **Locale(s):** https://www.google.com"; \
+            echo ":globe_with_meridians: **URL:** `https://www.google.com`"; \
             echo ":whale2: Docker image: jinghui.hou@sas.com"; \
-            echo ":palm_tree: Environment vars: `jinghui.hou@sas.com`"; \
+            echo ":palm_tree: Environment vars: `'jinghui.hou@sas.com'`"; \
             echo ":email: Recipient(s): `jinghui.hou@sas.com,abc@sas.com`"; \
            }  >> "$GITHUB_STEP_SUMMARY"
 
