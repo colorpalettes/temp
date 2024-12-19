@@ -35,7 +35,7 @@ jobs:
   job1:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: ${{ fromJSON(format('{0}', inputs.jobs_max_parallel || "1")) }}
+      max-parallel: ${{ fromJSON(format({0}, inputs.jobs_max_parallel || '1')) }}
       matrix: ${{ fromJSON(inputs.locale_mx) }}
     # outputs:
     #   abc: ${{ steps.set-matrix.outputs.matrix }}
