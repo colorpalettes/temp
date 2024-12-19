@@ -11,10 +11,10 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      # locale_mx:
-      #   description: "The locales to run tests"
-      #   # default: '["jp","cn"]'
-      #   default: '"jp","cn"'
+      locale_mx:
+        description: "The locales to run tests"
+        default: '["jp","cn"]'
+        # default: '"jp","cn"'
       name:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Person to greet'
@@ -24,13 +24,21 @@ on:
         required: true
         # The data type of the input
         type: string
+      jobs_max_parallel:
+        description: "The number of jobs run in parallel."
+        required: true
+        type: string
+        default: "1"
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   job1:
     runs-on: ubuntu-latest
-    outputs:
-      abc: ${{ steps.set-matrix.outputs.matrix }}
+    strategy:
+      max-parallel: ${{ fromJSON(format('[{0}]', jobs_max_parallel || "1")) }}
+      matrix: ${{ fromJSON(inputs.locale_mx) }}
+    # outputs:
+    #   abc: ${{ steps.set-matrix.outputs.matrix }}
     steps:
       - id: set-matrix
         run: |
