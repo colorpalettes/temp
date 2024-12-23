@@ -151,7 +151,7 @@ jobs:
         language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
     needs: configure-environment
     steps:
-      - id: print outputs
+      - id: print_outputs
         run: |
           echo "matrix.language: ${{ matrix.language }}"
           echo "${{ needs.configure-environment.outputs.test_suite }}"
