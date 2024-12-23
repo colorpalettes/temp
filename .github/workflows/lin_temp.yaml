@@ -61,7 +61,7 @@ on:
 
 jobs:
   configure-environment:
-    runs-on: on-prem-test
+    runs-on: ubuntu-latest
     outputs:
       test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
       shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
