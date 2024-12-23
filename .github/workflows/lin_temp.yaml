@@ -86,7 +86,7 @@ jobs:
           docker_image='test_playwright:latest'
           env_variables='PW_TIMEOUT=60'
           pr_link=''
-          email_recipient='abc@test.com'
+          email_recipient='coldcolor@live.cn'
 
           if [[ "$event_schedule" == '0 0 * * 1-5' ]]; then
             test_suite=lin_p1
@@ -111,7 +111,7 @@ jobs:
             docker_image=${{ inputs.docker_image || 'test_playwright:latest' }}
             env_variables=${{ inputs.env_variables || 'PW_TIMEOUT=60' }}
             pr_link=''
-            email_recipient=${{ inputs.email_recipient || 'abc@test.com' }}
+            email_recipient=${{ inputs.email_recipient || 'coldcolor@live.cn' }}
           fi
 
           shortened_name=$test_suite
