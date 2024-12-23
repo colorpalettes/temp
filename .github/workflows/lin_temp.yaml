@@ -141,3 +141,25 @@ jobs:
             echo ":palm_tree: **Environment vars:** $env_variables"; \
             echo ":email: **Recipient(s):** \`$email_recipient\`"; \
           }  >> "$GITHUB_STEP_SUMMARY"
+
+  lineage-app-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) || 1 }}
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+    needs: configure-environment
+    steps:
+      - id: print outputs
+        run: |
+          echo "matrix.language: ${{ matrix.language }}"
+          echo "${{ needs.configure-environment.outputs.test_suite }}"
+          echo "${{ needs.configure-environment.outputs.shortened_name }}"
+          echo "${{ needs.configure-environment.outputs.languages }}"
+          echo "${{ needs.configure-environment.outputs.base_url }}"
+          echo "${{ needs.configure-environment.outputs.jobs_max_parallel }}"
+          echo "${{ needs.configure-environment.outputs.docker_image }}"
+          echo "${{ needs.configure-environment.outputs.env_variables }}"
+          echo "${{ needs.configure-environment.outputs.pr_link }}"
+          echo "${{ needs.configure-environment.outputs.email_recipient }}"
