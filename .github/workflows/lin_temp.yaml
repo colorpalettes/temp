@@ -26,7 +26,7 @@ on:
           - lin_sample
       languages:
         description: "The languages for running tests with"
-        required: false
+        required: true
         type: string
         default: '"en","de"'
       sas_base_url:
@@ -36,7 +36,7 @@ on:
         default: "https://www.google.com"
       jobs_max_parallel:
         description: "The max number of jobs run in parallel"
-        required: false
+        required: true
         type: string
         default: "1"
       docker_image:
@@ -101,10 +101,11 @@ jobs:
           else
             echo "This run is not scheduled"
             test_suite=${{ inputs.sas_include_tests }}
-            languages=${{ inputs.languages == '' && toJson('"en","de","fr"') || inputs.languages }}
-            base_url=${{ inputs.sas_base_url == '' || 'https://www.nba.com' }}
-            jobs_max_parallel=${{ inputs.jobs_max_parallel == '' || '1' }}
-            docker_image=${{ inputs.docker_image == '' || 'test_playwright:latest' }}
+            # languages=${{ inputs.languages == '' && toJson('"en","de","fr"') || inputs.languages }}
+            languages=${{ inputs.languages }}
+            base_url=${{ inputs.sas_base_url }}
+            jobs_max_parallel=${{ inputs.jobs_max_parallel }}
+            docker_image=${{ inputs.docker_image }}
             env_variables=${{ inputs.env_variables == '' || 'PW_TIMEOUT=60' }}
             pr_link=''
             email_recipient=${{ inputs.email_recipient == '' || 'coldcolor@live.cn' }}
