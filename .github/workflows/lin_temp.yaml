@@ -150,7 +150,7 @@ jobs:
       max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) || 1 }}
       fail-fast: false
       matrix:
-        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) 
+        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
         # language: ${{ inputs.languages == '' && fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) || fromJSON(format('[{0}]', inputs.languages)) }}
     needs: configure-environment
     steps:
