@@ -4,12 +4,12 @@ name:
 
 run-name: >-
   ${{ inputs.sas_include_tests }}
-  ${{ github.event.schedule == '*/5 * * * *' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
+  ${{ github.event.schedule == '30 * * * *' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
   ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
 
 on:
   schedule:
-    - cron: "*/5 * * * *"
+    - cron: "30 * * * *"
 
   workflow_dispatch:
     inputs:
@@ -83,7 +83,7 @@ jobs:
           pr_link=''
           email_recipient='jinghui.hou@sas.com,jianlin.yang@sas.com,ruihua.cheng@sas.com'
 
-          if [[ "$event_schedule" == '*/5 * * * *' ]]; then
+          if [[ "$event_schedule" == '30 * * * *' ]]; then
             test_suite=lng_p1
             languages='"it","sr","sv","th", "tr"'
           else
