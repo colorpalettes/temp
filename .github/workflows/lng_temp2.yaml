@@ -4,7 +4,7 @@ name:
 
 run-name: >-
   ${{ inputs.sas_include_tests }}
-  ${{ github.event.schedule == '0 0 * * 1-5' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
+  ${{ github.event.schedule == '50 5 * * 1-5' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
   ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
 
 on:
@@ -85,17 +85,6 @@ jobs:
           email_recipient='jinghui.hou@sas.com,jianlin.yang@sas.com,ruihua.cheng@sas.com'
 
           if [[ "$event_schedule" == '0 0 * * 1-5' ]]; then
-            test_suite=lng_p1
-          elif [[ "$event_schedule" == '0 1 * * 2' ]]; then
-            test_suite=lng_p1
-            languages='"cs","es","nl","pl","sk"'
-          elif [[ "$event_schedule" == '0 1 * * 3' ]]; then
-            test_suite=lng_p1
-            languages='"da","hu","no","pt","zh-Hant"'
-          elif [[ "$event_schedule" == '0 1 * * 4' ]]; then
-            test_suite=lng_p1
-            languages='"el","fi","ko","sh","sl"'
-          elif [[ "$event_schedule" == '0 1 * * 5' ]]; then
             test_suite=lng_p1
             languages='"it","sr","sv","th", "tr"'
           else
