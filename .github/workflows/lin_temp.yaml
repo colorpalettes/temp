@@ -119,6 +119,7 @@ jobs:
 
           echo "shortened_name: $shortened_name"
           echo "test_suite: $test_suite"
+          echo "languages: $languages"
 
           { \
             echo "test_suite=$test_suite"; \
@@ -148,7 +149,7 @@ jobs:
       max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) || 1 }}
       fail-fast: false
       matrix:
-        language: ${{ fromJSON(format('[{0}]', inputs.languages || '"en","de","fr","ja","zh-Hans"')) }}
+        language: ${{ fromJSON(format('[{0}]', inputs.languages)) }}
     needs: configure-environment
     steps:
       - id: print_outputs
