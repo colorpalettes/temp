@@ -102,7 +102,7 @@ jobs:
             echo "This run is not scheduled"
             test_suite=${{ inputs.sas_include_tests }}
             # languages=${{ inputs.languages == '' && toJson('"en","de","fr"') || inputs.languages }}
-            languages=${{ inputs.languages }}
+            languages=${{ toJson(inputs.languages) }}
             base_url=${{ inputs.sas_base_url }}
             jobs_max_parallel=${{ inputs.jobs_max_parallel }}
             docker_image=${{ inputs.docker_image }}
@@ -117,7 +117,7 @@ jobs:
           echo "shortened_name: $shortened_name"
           echo "test_suite: $test_suite"
           echo "languages: $languages"
-          echo "${{ toJson(inputs.languages) }}"
+          # echo "${{ toJson(inputs.languages) }}"
 
           { \
             echo "test_suite=$test_suite"; \
