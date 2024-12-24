@@ -1,6 +1,6 @@
 ---
 name:
-  Tmp lng App Tests
+  Tmp lng App Tests 2
 
 run-name: >-
   ${{ inputs.sas_include_tests }}
