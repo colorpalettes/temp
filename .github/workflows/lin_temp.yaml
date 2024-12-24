@@ -61,7 +61,7 @@ on:
 
 jobs:
   configure-environment:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     outputs:
       test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
       shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
@@ -144,7 +144,7 @@ jobs:
           }  >> "$GITHUB_STEP_SUMMARY"
 
   lineage-app-tests:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     strategy:
       max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) || 1 }}
       fail-fast: false
