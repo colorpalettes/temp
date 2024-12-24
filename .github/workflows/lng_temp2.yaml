@@ -1,0 +1,161 @@
+---
+name:
+  Tmp lng App Tests
+
+run-name: >-
+  ${{ inputs.sas_include_tests }}
+  ${{ github.event.schedule == '0 0 * * 1-5' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
+  ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
+
+on:
+  schedule:
+  # On Plover
+  - cron: "0 0 * * 1-5" # P1 at 8:00 AM CST every weekday
+
+  workflow_dispatch:
+    inputs:
+      sas_include_tests:
+        description: "Tests to be included"
+        type: choice
+        options:
+          - lng_p1
+          - lng_improvements
+          - lng_columns_tab
+          - lng_expand_levels
+          - lng_resize_nodes
+          - lng_sample
+      languages:
+        description: "The languages for running tests with"
+        required: true
+        type: string
+        default: '"en","de","fr","ja","zh-Hans"'
+      sas_base_url:
+        description: "The full URL of the VM where the tests will be run"
+        required: true
+        type: string
+        default: "https://www.google.com"
+      jobs_max_parallel:
+        description: "The max number of jobs run in parallel"
+        required: true
+        type: string
+        default: "1"
+      docker_image:
+        description: "The test container image from pulp"
+        required: true
+        default: "test_playwright:latest"
+        type: string
+      env_variables:
+        description: "Comma-separated list of environment variables (e.g., ENV1=WHATEVER,ENV2=WHAT EVER)"
+        type: string
+        default: "PW_TIMEOUT=60"
+      pr_link:
+        description: "Link to the PR to optionally post the test result to"
+        type: string
+      email_recipient:
+        description: "List of emails to be sent testing result to, seperated by commas"
+        type: string
+
+jobs:
+  configure-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
+      shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
+      languages: ${{ steps.set-output-defaults.outputs.languages }}
+      base_url: ${{ steps.set-output-defaults.outputs.base_url }}
+      jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
+      docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
+      env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
+      pr_link: ${{ steps.set-output-defaults.outputs.pr_link }}
+      email_recipient: ${{ steps.set-output-defaults.outputs.email_recipient }}
+    steps:
+      - name: Set variable based on schedule
+        id: set-output-defaults
+        shell: bash
+        run: |
+          event_schedule='${{ github.event.schedule }}'
+          lng_TESTS_DIR=/opt/sas/viya/home/test/tests/lng/tests
+
+          languages='"en","de","fr","ja","zh-Hans"'
+          base_url='https://www.google.com'
+          jobs_max_parallel='1'
+          docker_image='pulp.unx.sas.com/cdpdefault-snapshot-x64_oci_linux_2-docker-latest/dmvuisaslng_playwright:latest'
+          env_variables='PW_TIMEOUT=60,SAS_TEST2_USER=etldemo,DU_UNDER_TEST=sas-information-catalog-app,SAS_TEST_USERNAMES=[DMT] ETL Guest Account:SAS etlguest User,SAS_TEST2_USERNAMES=[DMT] ETL Demo Account:SAS etldemo User,SAS_ADMIN_USERNAMES=[DMT] ETL Adm Account:SAS etladm User'
+          pr_link=''
+          email_recipient='jinghui.hou@sas.com,jianlin.yang@sas.com,ruihua.cheng@sas.com'
+
+          if [[ "$event_schedule" == '0 0 * * 1-5' ]]; then
+            test_suite=lng_p1
+          elif [[ "$event_schedule" == '0 1 * * 2' ]]; then
+            test_suite=lng_p1
+            languages='"cs","es","nl","pl","sk"'
+          elif [[ "$event_schedule" == '0 1 * * 3' ]]; then
+            test_suite=lng_p1
+            languages='"da","hu","no","pt","zh-Hant"'
+          elif [[ "$event_schedule" == '0 1 * * 4' ]]; then
+            test_suite=lng_p1
+            languages='"el","fi","ko","sh","sl"'
+          elif [[ "$event_schedule" == '0 1 * * 5' ]]; then
+            test_suite=lng_p1
+            languages='"it","sr","sv","th", "tr"'
+          else
+            echo "This run is not scheduled"
+            test_suite=${{ inputs.sas_include_tests }}
+            languages=${{ toJson(inputs.languages) }}
+            base_url=${{ inputs.sas_base_url }}
+            jobs_max_parallel=${{ inputs.jobs_max_parallel }}
+            docker_image=${{ inputs.docker_image }}
+            env_variables=${{ inputs.env_variables }}
+            pr_link=''
+            email_recipient=${{ inputs.email_recipient || 'coldcolor@live.cn' }}
+          fi
+
+          shortened_name=$test_suite
+          test_suite=${lng_TESTS_DIR}/test_${test_suite}.py
+
+          echo "shortened_name: $shortened_name"
+          echo "test_suite: $test_suite"
+
+          { \
+            echo "test_suite=$test_suite"; \
+            echo "shortened_name=$shortened_name"; \
+            echo "languages=$languages"; \
+            echo "base_url=$base_url"; \
+            echo "jobs_max_parallel=$jobs_max_parallel"; \
+            echo "docker_image=$docker_image"; \
+            echo "env_variables=$env_variables"; \
+            echo "pr_link=$pr_link"; \
+            echo "email_recipient=$email_recipient"; \
+          }  >> "$GITHUB_OUTPUT"
+
+          { \
+            echo "## $shortened_name"; \
+            echo ":earth_americas: **Language(s):** $languages"; \
+            echo ":globe_with_meridians: **URL:** $base_url"; \
+            echo ":twisted_rightwards_arrows: **Job max parallel:** $jobs_max_parallel"; \
+            echo ":whale2: **Docker image:** $docker_image"; \
+            echo ":palm_tree: **Environment vars:** $env_variables"; \
+            echo ":email: **Recipient(s):** \`$email_recipient\`"; \
+          }  >> "$GITHUB_STEP_SUMMARY"
+
+  lng-app-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+    needs: configure-environment
+    steps:
+      - id: print_outputs
+        run: |
+          echo "matrix.language: ${{ matrix.language }}"
+          echo "${{ needs.configure-environment.outputs.test_suite }}"
+          echo "${{ needs.configure-environment.outputs.shortened_name }}"
+          echo "${{ needs.configure-environment.outputs.languages }}"
+          echo "${{ needs.configure-environment.outputs.base_url }}"
+          echo "${{ needs.configure-environment.outputs.jobs_max_parallel }}"
+          echo "${{ needs.configure-environment.outputs.docker_image }}"
+          echo "${{ needs.configure-environment.outputs.env_variables }}"
+          echo "${{ needs.configure-environment.outputs.pr_link }}"
+          echo "${{ needs.configure-environment.outputs.email_recipient }}"
