@@ -9,8 +9,7 @@ run-name: >-
 
 on:
   schedule:
-  # On Plover
-    - cron: "*/5 * * * *" # P1 at 8:00 AM CST every weekday
+    - cron: "*/5 * * * *"
 
   workflow_dispatch:
     inputs:
