@@ -32,7 +32,7 @@ on:
         description: "The languages for running tests with"
         required: false
         type: string
-        default: '"en","de"'
+        # default: '"en","de"'
       sas_base_url:
         description: "The full URL of the VM where the tests will be run"
         required: true
