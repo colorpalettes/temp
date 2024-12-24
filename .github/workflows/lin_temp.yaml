@@ -106,9 +106,9 @@ jobs:
             base_url=${{ inputs.sas_base_url }}
             jobs_max_parallel=${{ inputs.jobs_max_parallel }}
             docker_image=${{ inputs.docker_image }}
-            env_variables=${{ inputs.env_variables == '' || 'PW_TIMEOUT=60' }}
+            env_variables=${{ inputs.env_variables || 'PW_TIMEOUT=100' }}
             pr_link=''
-            email_recipient=${{ inputs.email_recipient == '' || 'coldcolor@live.cn' }}
+            email_recipient=${{ inputs.email_recipient || 'coldcolor@live.cn' }}
           fi
 
           shortened_name=$test_suite
