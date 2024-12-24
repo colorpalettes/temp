@@ -30,7 +30,7 @@ on:
           - lin_sample
       languages:
         description: "The languages for running tests with"
-        required: true
+        required: false
         type: string
         default: '"en","de"'
       sas_base_url:
