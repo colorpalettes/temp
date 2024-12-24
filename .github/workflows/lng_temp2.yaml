@@ -4,13 +4,13 @@ name:
 
 run-name: >-
   ${{ inputs.sas_include_tests }}
-  ${{ github.event.schedule == '52 5 * * 1-5' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
+  ${{ github.event.schedule == '*/5 * * * *' && 'P1 [en,de,fr,ja,zh-Hans] - https://www.google.com' || '' }}
   ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
 
 on:
   schedule:
   # On Plover
-    - cron: "56 5 * * 1-5" # P1 at 8:00 AM CST every weekday
+    - cron: "*/5 * * * *" # P1 at 8:00 AM CST every weekday
 
   workflow_dispatch:
     inputs:
@@ -84,7 +84,7 @@ jobs:
           pr_link=''
           email_recipient='jinghui.hou@sas.com,jianlin.yang@sas.com,ruihua.cheng@sas.com'
 
-          if [[ "$event_schedule" == '56 5 * * 1-5' ]]; then
+          if [[ "$event_schedule" == '*/5 * * * *' ]]; then
             test_suite=lng_p1
             languages='"it","sr","sv","th", "tr"'
           else
