@@ -105,7 +105,7 @@ jobs:
           else
             echo "This run is not scheduled"
             test_suite=${{ inputs.sas_include_tests }}
-            languages=${{ inputs.languages == '' && toJson('"en","de","fr"') || toJson(inputs.languages) }}
+            languages=${{ inputs.languages == '' && toJson('"en","de","fr"') || inputs.languages }}
             # languages='"en","de","fr"'
             base_url=${{ inputs.sas_base_url || 'https://www.google.com' }}
             jobs_max_parallel=${{ inputs.jobs_max_parallel || '1' }}
