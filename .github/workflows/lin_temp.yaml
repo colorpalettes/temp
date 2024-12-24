@@ -144,7 +144,7 @@ jobs:
   lineage-app-tests:
     runs-on: ubuntu-latest
     strategy:
-      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) || 1 }}
+      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
       fail-fast: false
       matrix:
         language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
