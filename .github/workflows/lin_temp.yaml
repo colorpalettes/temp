@@ -58,14 +58,14 @@ on:
 jobs:
   configure-environment:
     runs-on: ubuntu-latest
-    # outputs:
+    outputs:
     #   test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
     #   shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
     #   languages: ${{ steps.set-output-defaults.outputs.languages }}
     #   base_url: ${{ steps.set-output-defaults.outputs.base_url }}
     #   jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
     #   docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
-    #   env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
+      env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
     #   pr_link: ${{ steps.set-output-defaults.outputs.pr_link }}
     #   email_recipient: ${{ steps.set-output-defaults.outputs.email_recipient }}
     steps:
@@ -74,12 +74,15 @@ jobs:
         shell: bash
         run: |
           echo "inputs.env_variables: ${{ inputs.env_variables }}"
-          var1=${{ fromJSON(inputs.env_variables) }}
-          var2=${{ fromJSON('{"VAR1":"VALUE1"}') }}
-          echo "var1: $var1"
-          echo "var2: $var2"
-          echo "toJson1: ${{ toJSON(inputs.env_variables) }}"
-          echo ${{ join('{"VAR1":"VALUE1"}', toJSON(inputs.env_variables)) }}
+          env_variables='{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}'
+          echo "$env_variables"
+          
+          # var1=${{ fromJSON(inputs.env_variables) }}
+          # var2=${{ fromJSON('{"VAR1":"VALUE1"}') }}
+          # echo "var1: $var1"
+          # echo "var2: $var2"
+          # echo "toJson1: ${{ toJSON(inputs.env_variables) }}"
+          # echo ${{ join('{"VAR1":"VALUE1"}', toJSON(inputs.env_variables)) }}
         
           # event_schedule='${{ github.event.schedule }}'
           # LIN_TESTS_DIR=/opt/sas/viya/home/test/tests/lineage/tests
@@ -127,17 +130,17 @@ jobs:
           # echo "languages: $languages"
           # # echo "${{ toJson(inputs.languages) }}"
 
-          # { \
-          #   echo "test_suite=$test_suite"; \
-          #   echo "shortened_name=$shortened_name"; \
-          #   echo "languages=$languages"; \
-          #   echo "base_url=$base_url"; \
-          #   echo "jobs_max_parallel=$jobs_max_parallel"; \
-          #   echo "docker_image=$docker_image"; \
-          #   echo "env_variables=$env_variables"; \
-          #   echo "pr_link=$pr_link"; \
-          #   echo "email_recipient=$email_recipient"; \
-          # }  >> "$GITHUB_OUTPUT"
+          { \
+            # echo "test_suite=$test_suite"; \
+            # echo "shortened_name=$shortened_name"; \
+            # echo "languages=$languages"; \
+            # echo "base_url=$base_url"; \
+            # echo "jobs_max_parallel=$jobs_max_parallel"; \
+            # echo "docker_image=$docker_image"; \
+            echo "env_variables=$env_variables"; \
+            # echo "pr_link=$pr_link"; \
+            # echo "email_recipient=$email_recipient"; \
+          }  >> "$GITHUB_OUTPUT"
 
           # { \
           #   echo "## $shortened_name"; \
