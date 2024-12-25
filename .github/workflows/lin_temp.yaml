@@ -79,6 +79,7 @@ jobs:
           echo "var1: $var1"
           echo "var2: $var2"
           echo "toJson1: ${{ toJSON(inputs.env_variables) }}"
+          echo ${{ join('{"VAR1":"VALUE1"}',inputs.env_variables) }}
         
           # event_schedule='${{ github.event.schedule }}'
           # LIN_TESTS_DIR=/opt/sas/viya/home/test/tests/lineage/tests
