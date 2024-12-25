@@ -63,7 +63,7 @@ jobs:
     #   shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
     #   languages: ${{ steps.set-output-defaults.outputs.languages }}
     #   base_url: ${{ steps.set-output-defaults.outputs.base_url }}
-    #   jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
+      jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
     #   docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
       env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
     #   pr_link: ${{ steps.set-output-defaults.outputs.pr_link }}
@@ -135,7 +135,7 @@ jobs:
             # echo "shortened_name=$shortened_name"; \
             # echo "languages=$languages"; \
             # echo "base_url=$base_url"; \
-            # echo "jobs_max_parallel=$jobs_max_parallel"; \
+            echo "jobs_max_parallel=$jobs_max_parallel"; \
             # echo "docker_image=$docker_image"; \
             echo "env_variables=$env_variables"; \
             # echo "pr_link=$pr_link"; \
@@ -154,17 +154,17 @@ jobs:
 
   lineage-app-tests:
     runs-on: ubuntu-latest
-  #   strategy:
-  #     max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
-  #     fail-fast: false
-  #     matrix:
-  #       language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+    strategy:
+      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
   #       # language: ${{ inputs.languages == '' && fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) || fromJSON(format('[{0}]', inputs.languages)) }}
     needs: configure-environment
     steps:
       - id: print_outputs
         run: |
-          echo "${{ format(needs.configure-environment.outputs.env_variables, 'zh-Hans') }}"
+          echo "${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}"
   #         echo "matrix.language: ${{ matrix.language }}"
   #         echo "${{ needs.configure-environment.outputs.test_suite }}"
   #         echo "${{ needs.configure-environment.outputs.shortened_name }}"
