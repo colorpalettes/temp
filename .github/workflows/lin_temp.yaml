@@ -74,7 +74,7 @@ jobs:
         shell: bash
         run: |
           echo "inputs.env_variables: ${{ inputs.env_variables }}"
-          env_variables='{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}'
+          env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
           echo "$env_variables"
           
           # var1=${{ fromJSON(inputs.env_variables) }}
