@@ -61,7 +61,7 @@ jobs:
     outputs:
     #   test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
     #   shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
-    #   languages: ${{ steps.set-output-defaults.outputs.languages }}
+      languages: ${{ steps.set-output-defaults.outputs.languages }}
     #   base_url: ${{ steps.set-output-defaults.outputs.base_url }}
       jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
     #   docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
@@ -87,6 +87,7 @@ jobs:
           # event_schedule='${{ github.event.schedule }}'
           # LIN_TESTS_DIR=/opt/sas/viya/home/test/tests/lineage/tests
 
+          languages='"en","de"'
           # languages='"en","de","fr","ja","zh-Hans"'
           # base_url='https://www.google.com'
           # jobs_max_parallel='1'
@@ -133,7 +134,7 @@ jobs:
           { \
             # echo "test_suite=$test_suite"; \
             # echo "shortened_name=$shortened_name"; \
-            # echo "languages=$languages"; \
+            echo "languages=$languages"; \
             # echo "base_url=$base_url"; \
             echo "jobs_max_parallel=$jobs_max_parallel"; \
             # echo "docker_image=$docker_image"; \
