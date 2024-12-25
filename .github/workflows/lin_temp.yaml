@@ -73,7 +73,11 @@ jobs:
         id: set-output-defaults
         shell: bash
         run: |
-          echo ${{ inputs.env_variables }}
+          echo "inputs.env_variables: ${{ inputs.env_variables }}"
+          var1=${{ fromJSON(inputs.env_variables) }}
+          var2=${{ fromJSON('{"VAR1":"VALUE1"}') }}
+          echo "var1: $var1"
+          echo "var2: $var2"
         
           # event_schedule='${{ github.event.schedule }}'
           # LIN_TESTS_DIR=/opt/sas/viya/home/test/tests/lineage/tests
