@@ -90,7 +90,7 @@ jobs:
           languages='"en","de"'
           # languages='"en","de","fr","ja","zh-Hans"'
           # base_url='https://www.google.com'
-          # jobs_max_parallel='1'
+          jobs_max_parallel='1'
           # docker_image='test_playwright:latest'
           # env_variables='PW_TIMEOUT=60'
           # pr_link=''
