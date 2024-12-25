@@ -75,6 +75,12 @@ jobs:
           event_schedule='${{ github.event.schedule }}'
           lng_TESTS_DIR=/opt/sas/viya/home/test/tests/lng/tests
 
+          lang_gp=('"en","de","fr","ja","zh-Hans"' \
+                   '"cs","es","nl","pl","sk"' \
+                   '"da","hu","no","pt","zh-Hant"' \
+                   '"el","fi","ko","sh","sl"' \
+                   '"it","sr","sv","th", "tr"')
+
           languages='"en","de","fr","ja","zh-Hans"'
           base_url='https://www.google.com'
           jobs_max_parallel='1'
@@ -89,7 +95,8 @@ jobs:
           else
             echo "This run is not scheduled"
             test_suite=${{ inputs.sas_include_tests }}
-            languages=${{ toJson(inputs.languages) }}
+            languages=${lang_gp[3]}
+            # languages=${{ toJson(inputs.languages) }}
             base_url=${{ inputs.sas_base_url }}
             jobs_max_parallel=${{ inputs.jobs_max_parallel }}
             docker_image=${{ inputs.docker_image }}
