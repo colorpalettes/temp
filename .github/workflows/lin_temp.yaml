@@ -164,7 +164,7 @@ jobs:
     steps:
       - id: print_outputs
         run: |
-          echo "${{ format("'"needs.configure-environment.outputs.env_variables"'"), 'zh-Hans') }}"
+          echo "${{ format(needs.configure-environment.outputs.env_variables), 'zh-Hans') }}"
   #         echo "matrix.language: ${{ matrix.language }}"
   #         echo "${{ needs.configure-environment.outputs.test_suite }}"
   #         echo "${{ needs.configure-environment.outputs.shortened_name }}"
