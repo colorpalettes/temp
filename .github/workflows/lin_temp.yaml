@@ -73,7 +73,7 @@ jobs:
         id: set-output-defaults
         shell: bash
         run: |
-          echo "inputs.env_variables: ${{ inputs.env_variables }}"
+          echo "inputs.env_variables: ${{ toJson(inputs.env_variables) }}"
           env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
           echo "$env_variables"
           
