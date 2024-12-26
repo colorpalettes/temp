@@ -163,8 +163,8 @@ jobs:
   #       # language: ${{ inputs.languages == '' && fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) || fromJSON(format('[{0}]', inputs.languages)) }}
     uses: ./.github/workflows/workflow-b.yaml
     with:
-      config-path: ${{ matrix.language }}
-      env_variables: ${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}
+      config-path: ${{ toJson(matrix.language) }}
+      env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
     needs: configure-environment
     # steps:
     #   - id: print_outputs
