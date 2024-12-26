@@ -14,38 +14,67 @@ on:
 
   workflow_dispatch:
     inputs:
+      sas_include_tests:
+        description: "Tests to be included"
+        type: choice
+        options:
+          - lin_p1
+          - lin_improvements
+          - lin_columns
+          - lin_expand
+          - lin_resize
+          - lin_sample
       languages:
         description: "The languages for running tests with"
         required: true
         type: string
         default: '"en","de"'
+      sas_base_url:
+        description: "The full URL of the VM where the tests will be run"
+        required: true
+        type: string
+        default: "https://www.google.com"
       jobs_max_parallel:
         description: "The max number of jobs run in parallel"
         required: true
         type: string
         default: "1"
+      docker_image:
+        description: "The test container image from"
+        required: true
+        default: "test_playwright:latest"
+        type: string
       env_variables:
         description: "Comma-separated list of environment variables"
         type: string
-        default: "{\"ENV_LANGUAGE\":\"{0}\", \"PW_TIMEOUT\":\"60\"}"
+        default: '{"SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST_USER_2":"etldemo"}'
+      pr_link:
+        description: "Link to the PR to optionally post the test result to"
+        type: string
+      email_recipient:
+        description: "List of emails to be sent testing result to, seperated by commas"
+        type: string
+
 jobs:
   configure-environment:
     runs-on: ubuntu-latest
     outputs:
-      languages: ${{ steps.set-output-defaults.outputs.languages }}
-      jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
+    #   test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
+    #   shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
+    #   languages: ${{ steps.set-output-defaults.outputs.languages }}
+    #   base_url: ${{ steps.set-output-defaults.outputs.base_url }}
+    #   jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
+    #   docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
       env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
+    #   pr_link: ${{ steps.set-output-defaults.outputs.pr_link }}
+    #   email_recipient: ${{ steps.set-output-defaults.outputs.email_recipient }}
     steps:
       - name: Set variable based on schedule
         id: set-output-defaults
         shell: bash
         run: |
-         if [[ "${{ github.event_name }}" == 'schedule' ]]; then
-           env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
-         else
-           echo "This run is not scheduled"
-           env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
-         fi 
+          echo "inputs.env_variables: ${{ inputs.env_variables }}"
+          env_variables='{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}'
           echo "$env_variables"
           
           # var1=${{ fromJSON(inputs.env_variables) }}
@@ -58,10 +87,9 @@ jobs:
           # event_schedule='${{ github.event.schedule }}'
           # LIN_TESTS_DIR=/opt/sas/viya/home/test/tests/lineage/tests
 
-          languages='"en","de"'
           # languages='"en","de","fr","ja","zh-Hans"'
           # base_url='https://www.google.com'
-          jobs_max_parallel='1'
+          # jobs_max_parallel='1'
           # docker_image='test_playwright:latest'
           # env_variables='PW_TIMEOUT=60'
           # pr_link=''
@@ -105,9 +133,9 @@ jobs:
           { \
             # echo "test_suite=$test_suite"; \
             # echo "shortened_name=$shortened_name"; \
-            echo "languages=$languages"; \
+            # echo "languages=$languages"; \
             # echo "base_url=$base_url"; \
-            echo "jobs_max_parallel=$jobs_max_parallel"; \
+            # echo "jobs_max_parallel=$jobs_max_parallel"; \
             # echo "docker_image=$docker_image"; \
             echo "env_variables=$env_variables"; \
             # echo "pr_link=$pr_link"; \
@@ -124,23 +152,18 @@ jobs:
           #   echo ":email: **Recipient(s):** \`$email_recipient\`"; \
           # }  >> "$GITHUB_STEP_SUMMARY"
 
-  lineage-app-tests:
-    # runs-on: ubuntu-latest
-    strategy:
-      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
-      fail-fast: false
-      matrix:
-        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+  # lineage-app-tests:
+  #   runs-on: ubuntu-latest
+  #   strategy:
+  #     max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+  #     fail-fast: false
+  #     matrix:
+  #       language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
   #       # language: ${{ inputs.languages == '' && fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) || fromJSON(format('[{0}]', inputs.languages)) }}
-    uses: ./.github/workflows/workflow-b.yaml
-    with:
-      config-path: ${{ toJson(matrix.language) }}
-      env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
-    needs: configure-environment
-    # steps:
-    #   - id: print_outputs
-    #     run: |
-    #       echo '${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}'
+  #   needs: configure-environment
+  #   steps:
+  #     - id: print_outputs
+  #       run: |
   #         echo "matrix.language: ${{ matrix.language }}"
   #         echo "${{ needs.configure-environment.outputs.test_suite }}"
   #         echo "${{ needs.configure-environment.outputs.shortened_name }}"
@@ -148,5 +171,6 @@ jobs:
   #         echo "${{ needs.configure-environment.outputs.base_url }}"
   #         echo "${{ needs.configure-environment.outputs.jobs_max_parallel }}"
   #         echo "${{ needs.configure-environment.outputs.docker_image }}"
+  #         echo "${{ needs.configure-environment.outputs.env_variables }}"
   #         echo "${{ needs.configure-environment.outputs.pr_link }}"
   #         echo "${{ needs.configure-environment.outputs.email_recipient }}"
