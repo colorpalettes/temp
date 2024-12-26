@@ -40,7 +40,7 @@ jobs:
         id: set-output-defaults
         shell: bash
         run: |
-         if $[[ github.event_name == 'schedule' ]]; then
+         if [[ "${{ github.event_name }}" == 'schedule' ]]; then
            env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
          else
            echo "This run is not scheduled"
