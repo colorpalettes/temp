@@ -1,0 +1,66 @@
+---
+name:
+  lineage sample
+
+run-name: >-
+  ${{ inputs.sas_include_tests }}
+  ${{ github.event.schedule == '0 0 * * 1-5' && 'P1 [en,de,fr,ja,zh-Hans] - www.google.com' || '' }}
+  ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
+
+on:
+  schedule:
+  # On Plover
+  - cron: "0 0 * * 1-5" # P1 at 8:00 AM CST every weekday
+
+  workflow_dispatch:
+    inputs:
+      languages:
+        description: "The languages for running tests with"
+        required: true
+        type: string
+        default: '"en","de"'
+      jobs_max_parallel:
+        description: "The max number of jobs run in parallel"
+        required: true
+        type: string
+        default: "1"
+      env_variables:
+        description: "Comma-separated list of environment variables"
+        type: string
+        default: "{\"ENV_LANGUAGE\":\"{0}\", \"PW_TIMEOUT\":\"60\"}"
+jobs:
+  configure-environment:
+    runs-on: ubuntu-latest
+    outputs:
+      languages: ${{ steps.set-output-defaults.outputs.languages }}
+      jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
+      env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
+    steps:
+      - name: Set variable based on schedule
+        id: set-output-defaults
+        shell: bash
+        run: |
+         if [[ "${{ github.event_name }}" == 'schedule' ]]; then
+           env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
+         else
+           echo "This run is not scheduled"
+           env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
+         fi 
+         echo "$env_variables"
+         { \
+            echo "languages=$languages"; \
+            echo "jobs_max_parallel=$jobs_max_parallel"; \
+            echo "env_variables=$env_variables"; \
+          } >> "$GITHUB_OUTPUT"
+  lineage-app-tests:
+    # runs-on: ubuntu-latest
+    strategy:
+      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+      fail-fast: false
+      matrix:
+        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+    uses: ./.github/workflows/workflow-b.yaml
+    with:
+      config-path: ${{ toJson(matrix.language) }}
+      env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
+    needs: configure-environment
