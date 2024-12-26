@@ -14,67 +14,38 @@ on:
 
   workflow_dispatch:
     inputs:
-      sas_include_tests:
-        description: "Tests to be included"
-        type: choice
-        options:
-          - lin_p1
-          - lin_improvements
-          - lin_columns
-          - lin_expand
-          - lin_resize
-          - lin_sample
       languages:
         description: "The languages for running tests with"
         required: true
         type: string
         default: '"en","de"'
-      sas_base_url:
-        description: "The full URL of the VM where the tests will be run"
-        required: true
-        type: string
-        default: "https://www.google.com"
       jobs_max_parallel:
         description: "The max number of jobs run in parallel"
         required: true
         type: string
         default: "1"
-      docker_image:
-        description: "The test container image from"
-        required: true
-        default: "test_playwright:latest"
-        type: string
       env_variables:
         description: "Comma-separated list of environment variables"
         type: string
         default: "{\"ENV_LANGUAGE\":\"{0}\", \"PW_TIMEOUT\":\"60\"}"
-      pr_link:
-        description: "Link to the PR to optionally post the test result to"
-        type: string
-      email_recipient:
-        description: "List of emails to be sent testing result to, seperated by commas"
-        type: string
-
 jobs:
   configure-environment:
     runs-on: ubuntu-latest
     outputs:
-    #   test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
-    #   shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
       languages: ${{ steps.set-output-defaults.outputs.languages }}
-    #   base_url: ${{ steps.set-output-defaults.outputs.base_url }}
       jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
-    #   docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
       env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
-    #   pr_link: ${{ steps.set-output-defaults.outputs.pr_link }}
-    #   email_recipient: ${{ steps.set-output-defaults.outputs.email_recipient }}
     steps:
       - name: Set variable based on schedule
         id: set-output-defaults
         shell: bash
         run: |
-          echo 'inputs.env_variables: ${{ format('{{{0}}}', inputs.env_variables) }}'
-          env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
+         if $[[ github.event_name == 'schedule' ]]; then
+           env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
+         else
+           echo "This run is not scheduled"
+           env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
+         fi 
           echo "$env_variables"
           
           # var1=${{ fromJSON(inputs.env_variables) }}
