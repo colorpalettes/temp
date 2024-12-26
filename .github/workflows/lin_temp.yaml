@@ -47,7 +47,7 @@ on:
       env_variables:
         description: "Comma-separated list of environment variables"
         type: string
-        default: '{"SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST_USER_2":"etldemo"}'
+        default: '{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}'
       pr_link:
         description: "Link to the PR to optionally post the test result to"
         type: string
