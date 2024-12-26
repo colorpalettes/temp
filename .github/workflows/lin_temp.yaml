@@ -154,18 +154,22 @@ jobs:
           # }  >> "$GITHUB_STEP_SUMMARY"
 
   lineage-app-tests:
-    runs-on: ubuntu-latest
+    # runs-on: ubuntu-latest
     strategy:
       max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
       fail-fast: false
       matrix:
         language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
   #       # language: ${{ inputs.languages == '' && fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) || fromJSON(format('[{0}]', inputs.languages)) }}
-    needs: configure-environment
-    steps:
-      - id: print_outputs
-        run: |
-          echo '${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}'
+    uses: ./.github/workflows/workflow-b.yaml
+    with:
+      config-path: ${{ matrix.language }}
+      env_variables: ${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}
+    # needs: configure-environment
+    # steps:
+    #   - id: print_outputs
+    #     run: |
+    #       echo '${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}'
   #         echo "matrix.language: ${{ matrix.language }}"
   #         echo "${{ needs.configure-environment.outputs.test_suite }}"
   #         echo "${{ needs.configure-environment.outputs.shortened_name }}"
