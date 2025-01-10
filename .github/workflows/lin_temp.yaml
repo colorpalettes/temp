@@ -8,9 +8,9 @@ run-name: >-
   ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
 
 on:
-  schedule:
+  # schedule:
   # On Plover
-  - cron: "0 0 * * 1-5" # P1 at 8:00 AM CST every weekday
+  # - cron: "0 0 * * 1-5" # P1 at 8:00 AM CST every weekday
 
   workflow_dispatch:
     inputs:
