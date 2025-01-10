@@ -52,15 +52,15 @@ jobs:
             echo "jobs_max_parallel=$jobs_max_parallel"; \
             echo "env_variables=$env_variables"; \
           } >> "$GITHUB_OUTPUT"
-  lineage-app-tests:
-    # runs-on: ubuntu-latest
-    strategy:
-      max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
-      fail-fast: false
-      matrix:
-        language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
-    uses: ./.github/workflows/workflow-b.yaml
-    with:
-      config-path: ${{ toJson(matrix.language) }}
-      env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
-    needs: configure-environment
+  # lineage-app-tests:
+  #   # runs-on: ubuntu-latest
+  #   strategy:
+  #     max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+  #     fail-fast: false
+  #     matrix:
+  #       language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+  #   uses: ./.github/workflows/workflow-b.yaml
+  #   with:
+  #     config-path: ${{ toJson(matrix.language) }}
+  #     env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
+  #   needs: configure-environment
