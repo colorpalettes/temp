@@ -47,6 +47,8 @@ jobs:
            env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
          fi 
          echo "$env_variables"
+         echo "$jobs_max_parallel"
+         echo "$languages"
          { \
             echo "languages=$languages"; \
             echo "jobs_max_parallel=$jobs_max_parallel"; \
