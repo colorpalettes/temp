@@ -66,19 +66,19 @@ jobs:
     #   env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
     # needs: configure-environment
 
-  lineage-app-tests:
-    runs-on: ubuntu-latest
-    # strategy:
-    #   max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
-    #   fail-fast: false
-    #   matrix:
-    #     language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
-    needs: configure-environment
-    steps:
-      - id: print_outputs
-        run: |
-          # echo "matrix.language: ${{ matrix.language }}"
-          echo "${{ needs.configure-environment.outputs.languages }}"
-          echo "${{ needs.configure-environment.outputs.jobs_max_parallel }}"
-          echo "${{ needs.configure-environment.outputs.env_variables }}"
+  # lineage-app-tests:
+  #   runs-on: ubuntu-latest
+  #   # strategy:
+  #   #   max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+  #   #   fail-fast: false
+  #   #   matrix:
+  #   #     language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+  #   needs: configure-environment
+  #   steps:
+  #     - id: print_outputs
+  #       run: |
+  #         # echo "matrix.language: ${{ matrix.language }}"
+  #         echo "${{ needs.configure-environment.outputs.languages }}"
+  #         echo "${{ needs.configure-environment.outputs.jobs_max_parallel }}"
+  #         echo "${{ needs.configure-environment.outputs.env_variables }}"
 
