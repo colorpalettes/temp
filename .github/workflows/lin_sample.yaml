@@ -77,7 +77,7 @@ jobs:
     steps:
       - id: print_outputs
         run: |
-          echo "matrix.language: ${{ matrix.language }}"
+          # echo "matrix.language: ${{ matrix.language }}"
           echo "${{ needs.configure-environment.outputs.languages }}"
           echo "${{ needs.configure-environment.outputs.jobs_max_parallel }}"
           echo "${{ needs.configure-environment.outputs.env_variables }}"
