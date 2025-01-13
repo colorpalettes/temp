@@ -28,7 +28,8 @@ on:
         description: "Comma-separated list of environment variables"
         type: string
         # default: "{\"ENV_LANGUAGE\":\"{0}\", \"PW_TIMEOUT\":\"60\"}"
-        default: '{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}'
+        # default: '{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}'
+        default: "{'ENV_LANGUAGE':'{0}', 'PW_TIMEOUT':60}"
 jobs:
   configure-environment:
     runs-on: ubuntu-latest
@@ -45,7 +46,7 @@ jobs:
            env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":"60"}}'
          else
            echo "This run is not scheduled"
-           env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
+           env_variables="${{ format('{{{0}}}', inputs.env_variables) }}"
            jobs_max_parallel=${{ inputs.jobs_max_parallel }}
            languages=${{ toJson(inputs.languages) }}
          fi 
