@@ -116,7 +116,7 @@ jobs:
             base_url=${{ inputs.sas_base_url }}
             jobs_max_parallel=${{ inputs.jobs_max_parallel }}
             docker_image=${{ inputs.docker_image }}
-            env_variables=${{ format('{{{0}}}', inputs.env_variables) }}
+            env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
             pr_link=''
             email_recipient=${{ inputs.email_recipient || 'jinghui.hou@sas.com' }}
           fi
