@@ -1,0 +1,179 @@
+# --
+---
+name: Tmp Lineage App Tests 2
+
+run-name: >-
+  ${{ inputs.sas_include_tests }}
+  ${{ github.event.schedule == '0 0 * * 1-5' && 'P1 [en,de,fr,ja,zh-Hans] - https://daily.plover-m1.unx.sas.com' || '' }}
+  ${{ github.event.schedule == '0 1 * * 2' && 'P1 [cs,es,nl,pl,sk] - https://daily.plover-m1.unx.sas.com' || '' }}
+  ${{ github.event.schedule == '0 1 * * 3' && 'P1 [da,hu,no,pt,zh-Hant] - https://daily.plover-m1.unx.sas.com' || '' }}
+  ${{ github.event.schedule == '0 1 * * 4' && 'P1 [el,fi,ko,sh,sl] - https://daily.plover-m1.unx.sas.com' || '' }}
+  ${{ github.event.schedule == '0 1 * * 5' && 'P1 [it,sr,sv,th,tr] - https://daily.plover-m1.unx.sas.com' || '' }}
+  ${{ inputs.sas_base_url != '' && format('[{0}]', inputs.sas_base_url) || '' }}
+
+on:
+  schedule:
+    # On Plover
+    - cron: "0 0 * * 1-5" # P1 at 8:00 AM CST every weekday
+
+  workflow_dispatch:
+    inputs:
+      sas_include_tests:
+        description: "Tests to be included (Lacuna)"
+        type: choice
+        options:
+          - lineage_p1
+          - lineage_improvements
+          - lineage_columns_tab
+          - lineage_expand_levels
+          - lineage_resize_nodes
+          - lineage_sample
+      languages:
+        description: "The languages for running tests with"
+        required: true
+        type: string
+        default: '"en","de","fr","ja","zh-Hans"'
+      sas_base_url:
+        description: "The full URL of the VM where the tests will be run"
+        required: true
+        type: string
+        default: "https://daily.plover-m1.unx.sas.com"
+      jobs_max_parallel:
+        description: "The max number of jobs run in parallel"
+        required: true
+        type: string
+        default: "1"
+      docker_image:
+        description: "The test container image from pulp (it has to start with 'pulp')"
+        required: true
+        default: "pulp.unx.sas.com/cdpdefault-snapshot-x64_oci_linux_2-docker-latest/dmvuisaslineage_playwright:latest"
+        type: string
+      env_variables:
+        description: 'environment variables (e.g. {"ENV1":"WHATEVER","ENV2"="WHAT EVER"})'
+        type: string
+        default: '{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST2_USER":"etldemo", "SAS_TEST_USERNAMES":"[DMT] ETL Guest Account:SAS etlguest User", "SAS_TEST2_USERNAMES":"[DMT] ETL Demo Account:SAS etldemo User", "SAS_ADMIN_USERNAMES":"[DMT] ETL Adm Account:SAS etladm User"}'
+      pr_link:
+        description: "Link to the PR to optionally post the test result to"
+        type: string
+      email_recipient:
+        description: "List of emails to be sent testing result to, seperated by commas"
+        type: string
+
+jobs:
+  configure-environment:
+    runs-on: on-prem-test
+    outputs:
+      test_suite: ${{ steps.set-output-defaults.outputs.test_suite }}
+      shortened_name: ${{ steps.set-output-defaults.outputs.shortened_name }}
+      languages: ${{ steps.set-output-defaults.outputs.languages }}
+      base_url: ${{ steps.set-output-defaults.outputs.base_url }}
+      jobs_max_parallel: ${{ steps.set-output-defaults.outputs.jobs_max_parallel }}
+      docker_image: ${{ steps.set-output-defaults.outputs.docker_image }}
+      env_variables: ${{ steps.set-output-defaults.outputs.env_variables }}
+      pr_link: ${{ steps.set-output-defaults.outputs.pr_link }}
+      email_recipient: ${{ steps.set-output-defaults.outputs.email_recipient }}
+    steps:
+      - name: Set variables based on schedule
+        id: set-output-defaults
+        shell: bash
+        run: |
+          event_schedule=''
+          LINEAGE_TESTS_DIR=/opt/sas/viya/home/test/tests/lineage/tests
+
+          lang_gp=('"en","de","fr","ja","zh-Hans"' \
+                   '"cs","es","nl","pl","sk"' \
+                   '"da","hu","no","pt","zh-Hant"' \
+                   '"el","fi","ko","sh","sl"' \
+                   '"it","sr","sv","th", "tr"')
+
+          languages=${lang_gp[0]} # Default languages
+          base_url='https://daily.plover-m1.unx.sas.com'
+          jobs_max_parallel='1'
+          docker_image='pulp.unx.sas.com/cdpdefault-snapshot-x64_oci_linux_2-docker-latest/dmvuisaslineage_playwright:latest'
+          env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST2_USER":"etldemo", "SAS_TEST_USERNAMES":"[DMT] ETL Guest Account:SAS etlguest User", "SAS_TEST2_USERNAMES":"[DMT] ETL Demo Account:SAS etldemo User", "SAS_ADMIN_USERNAMES":"[DMT] ETL Adm Account:SAS etladm User"}}'
+          pr_link=''
+          email_recipient='jinghui.hou@sas.com,jianlin.yang@sas.com,ruihua.cheng@sas.com'
+
+          if [[ "$event_schedule" == '0 0 * * 1-5' ]]; then
+            test_suite=lineage_p1
+          elif [[ "$event_schedule" == '0 1 * * 2' ]]; then
+            test_suite=lineage_p1
+            languages=${lang_gp[1]}
+          elif [[ "$event_schedule" == '0 1 * * 3' ]]; then
+            test_suite=lineage_p1
+            languages=${lang_gp[2]}
+          elif [[ "$event_schedule" == '0 1 * * 4' ]]; then
+            test_suite=lineage_p1
+            languages=${lang_gp[3]}
+          elif [[ "$event_schedule" == '0 1 * * 5' ]]; then
+            test_suite=lineage_p1
+            languages=${lang_gp[4]}
+          else
+            echo "This run is not scheduled"
+            test_suite=${{ inputs.sas_include_tests }}
+            languages=${{ toJson(inputs.languages) }}
+            base_url=${{ inputs.sas_base_url }}
+            jobs_max_parallel=${{ inputs.jobs_max_parallel }}
+            docker_image=${{ inputs.docker_image }}
+            env_variables="${{ format('{{{0}}}', inputs.env_variables) }}"
+            pr_link=''
+            email_recipient=${{ inputs.email_recipient || 'jinghui.hou@sas.com' }}
+          fi
+
+          shortened_name=$test_suite
+          test_suite=${LINEAGE_TESTS_DIR}/test_${test_suite}.py
+
+          echo "shortened_name: $shortened_name"
+          echo "test_suite: $test_suite"
+
+          { \
+            echo "test_suite=$test_suite"; \
+            echo "shortened_name=$shortened_name"; \
+            echo "languages=$languages"; \
+            echo "base_url=$base_url"; \
+            echo "jobs_max_parallel=$jobs_max_parallel"; \
+            echo "docker_image=$docker_image"; \
+            echo "env_variables=$env_variables"; \
+            echo "pr_link=$pr_link"; \
+            echo "email_recipient=$email_recipient"; \
+          }  >> "$GITHUB_OUTPUT"
+
+          { \
+            echo "## $shortened_name"; \
+            echo ":earth_americas: **Language(s):** $languages"; \
+            echo ":globe_with_meridians: **URL:** $base_url"; \
+            echo ":twisted_rightwards_arrows: **Job max parallel:** $jobs_max_parallel"; \
+            echo ":whale2: **Docker image:** $docker_image"; \
+            echo ":palm_tree: **Environment vars:** $env_variables"; \
+            echo ":email: **Recipient(s):** \`$email_recipient\`"; \
+          }  >> "$GITHUB_STEP_SUMMARY"
+
+  # lineage-app-tests:
+  #   uses: sas-institute-rnd-internal/workflows-dmv/.github/workflows/containerized-test.yaml@v1
+  #   strategy:
+  #     max-parallel: ${{ fromJSON(needs.configure-environment.outputs.jobs_max_parallel) }}
+  #     fail-fast: false
+  #     matrix:
+  #       language: ${{ fromJSON(format('[{0}]', needs.configure-environment.outputs.languages)) }}
+  #   secrets:
+  #     sas_admin_password: "Datamt123"
+  #     sas_test_password: "Datamt123"
+  #     sas_test_2_password: "Datamt123"
+  #     login_password: "Datamt123"
+  #     dmv_app_private_key: "Datamt123"
+  #   needs: configure-environment
+  #   with:
+  #     docker_image: ${{ needs.configure-environment.outputs.docker_image }}
+  #     sas_base_url: ${{ needs.configure-environment.outputs.base_url }}
+  #     sas_include_tests: ${{ needs.configure-environment.outputs.test_suite }}
+  #     env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
+  #     test_results_dir: "/opt/sas/viya/config/var/tmp/results"
+  #     index_html_dir: "xunit"
+  #     du_name: "sas-lineage-app"
+  #     test_container: "quest_tools_dmvuisaslineage_playwright"
+  #     trigger_result_posting: false
+  #     project_name: "DATAPREP"
+  #     enable_test_report: true
+  #     email_recipient: ${{ needs.configure-environment.outputs.email_recipient }}
+  #     preferred_suite_name: ${{ needs.configure-environment.outputs.shortened_name }}
+  #     display_name: ${{ needs.configure-environment.outputs.shortened_name }}
