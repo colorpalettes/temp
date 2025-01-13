@@ -111,12 +111,12 @@ jobs:
           else
             echo "This run is not scheduled"
             test_suite=${{ inputs.sas_include_tests }}
-            # languages=${{ toJson(inputs.languages) }}
-            # base_url=${{ inputs.sas_base_url }}
-            # jobs_max_parallel=${{ inputs.jobs_max_parallel }}
-            # docker_image=${{ inputs.docker_image }}
+            languages=${{ toJson(inputs.languages) }}
+            base_url=${{ inputs.sas_base_url }}
+            jobs_max_parallel=${{ inputs.jobs_max_parallel }}
+            docker_image=${{ inputs.docker_image }}
             # env_variables="${{ format('{{{0}}}', inputs.env_variables) }}"
-            # pr_link=''
+            pr_link=''
             # email_recipient=${{ inputs.email_recipient || 'jinghui.hou@sas.com' }}
           fi
 
@@ -128,13 +128,13 @@ jobs:
 
           { \
             echo "test_suite=$test_suite"; \
-          #   echo "shortened_name=$shortened_name"; \
-          #   echo "languages=$languages"; \
-          #   echo "base_url=$base_url"; \
-          #   echo "jobs_max_parallel=$jobs_max_parallel"; \
-          #   echo "docker_image=$docker_image"; \
+            echo "shortened_name=$shortened_name"; \
+            echo "languages=$languages"; \
+            echo "base_url=$base_url"; \
+            echo "jobs_max_parallel=$jobs_max_parallel"; \
+            echo "docker_image=$docker_image"; \
           #   echo "env_variables=$env_variables"; \
-          #   echo "pr_link=$pr_link"; \
+            echo "pr_link=$pr_link"; \
           #   echo "email_recipient=$email_recipient"; \
           }  >> "$GITHUB_OUTPUT"
 
