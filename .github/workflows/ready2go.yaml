@@ -51,8 +51,8 @@ on:
       env_variables:
         description: 'environment variables (e.g. {"ENV1":"WHATEVER","ENV2"="WHAT EVER"})'
         type: string
-        # default: '{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST2_USER":"etldemo", "SAS_TEST_USERNAMES":"[DMT] ETL Guest Account:SAS etlguest User", "SAS_TEST2_USERNAMES":"[DMT] ETL Demo Account:SAS etldemo User", "SAS_ADMIN_USERNAMES":"[DMT] ETL Adm Account:SAS etladm User"}'
-        default: "{\"ENV_LANGUAGE\":\"{0}\", \"PW_TIMEOUT\":\"60\"}"
+        default: '{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST2_USER":"etldemo", "SAS_TEST_USERNAMES":"[DMT] ETL Guest Account:SAS etlguest User", "SAS_TEST2_USERNAMES":"[DMT] ETL Demo Account:SAS etldemo User", "SAS_ADMIN_USERNAMES":"[DMT] ETL Adm Account:SAS etladm User"}'
+        # default: "{\"ENV_LANGUAGE\":\"{0}\", \"PW_TIMEOUT\":\"60\"}"
       pr_link:
         description: "Link to the PR to optionally post the test result to"
         type: string
