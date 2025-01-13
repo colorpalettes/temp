@@ -110,7 +110,7 @@ jobs:
             languages=${lang_gp[4]}
           else
             echo "This run is not scheduled"
-            # test_suite=${{ inputs.sas_include_tests }}
+            test_suite=${{ inputs.sas_include_tests }}
             # languages=${{ toJson(inputs.languages) }}
             # base_url=${{ inputs.sas_base_url }}
             # jobs_max_parallel=${{ inputs.jobs_max_parallel }}
@@ -126,8 +126,8 @@ jobs:
           echo "shortened_name: $shortened_name"
           echo "test_suite: $test_suite"
 
-          # { \
-          #   echo "test_suite=$test_suite"; \
+          { \
+            echo "test_suite=$test_suite"; \
           #   echo "shortened_name=$shortened_name"; \
           #   echo "languages=$languages"; \
           #   echo "base_url=$base_url"; \
@@ -136,7 +136,7 @@ jobs:
           #   echo "env_variables=$env_variables"; \
           #   echo "pr_link=$pr_link"; \
           #   echo "email_recipient=$email_recipient"; \
-          # }  >> "$GITHUB_OUTPUT"
+          }  >> "$GITHUB_OUTPUT"
 
           { \
             echo "## $shortened_name"; \
