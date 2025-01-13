@@ -65,7 +65,7 @@ jobs:
     uses: ./.github/workflows/workflow-b.yaml
     with:
       config-path: ${{ toJson(matrix.language) }}
-      env_variables: ${{ toJson(format(needs.configure-environment.outputs.env_variables, matrix.language)) }}
+      env_variables: ${{ format(needs.configure-environment.outputs.env_variables, matrix.language) }}
     needs: configure-environment
 
 
