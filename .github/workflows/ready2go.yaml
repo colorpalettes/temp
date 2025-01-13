@@ -90,8 +90,7 @@ jobs:
           base_url='https://daily.plover-m1.unx.sas.com'
           jobs_max_parallel='1'
           docker_image='pulp.unx.sas.com/cdpdefault-snapshot-x64_oci_linux_2-docker-latest/dmvuisaslineage_playwright:latest'
-          env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm"}}'
-          # env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST2_USER":"etldemo", "SAS_TEST_USERNAMES":"[DMT] ETL Guest Account:SAS etlguest User", "SAS_TEST2_USERNAMES":"[DMT] ETL Demo Account:SAS etldemo User", "SAS_ADMIN_USERNAMES":"[DMT] ETL Adm Account:SAS etladm User"}}'
+          env_variables='{{"ENV_LANGUAGE":"{0}", "PW_TIMEOUT":60, "SAS_ADMIN_USER":"etladm", "SAS_TEST_USER":"etlguest", "SAS_TEST2_USER":"etldemo", "SAS_TEST_USERNAMES":"[DMT] ETL Guest Account:SAS etlguest User", "SAS_TEST2_USERNAMES":"[DMT] ETL Demo Account:SAS etldemo User", "SAS_ADMIN_USERNAMES":"[DMT] ETL Adm Account:SAS etladm User"}}'
           pr_link=''
           email_recipient='jinghui.hou@sas.com,jianlin.yang@sas.com,ruihua.cheng@sas.com'
 
@@ -116,7 +115,7 @@ jobs:
             base_url=${{ inputs.sas_base_url }}
             jobs_max_parallel=${{ inputs.jobs_max_parallel }}
             docker_image=${{ inputs.docker_image }}
-            env_variables='${{ format('{{{0}}}', inputs.env_variables) }}'
+            env_variables='${{ format("{{{0}}}", inputs.env_variables) }}'
             pr_link=''
             email_recipient=${{ inputs.email_recipient || 'jinghui.hou@sas.com' }}
           fi
