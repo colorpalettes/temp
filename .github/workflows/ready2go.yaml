@@ -117,7 +117,7 @@ jobs:
             docker_image=${{ inputs.docker_image }}
             # env_variables="${{ format('{{{0}}}', inputs.env_variables) }}"
             pr_link=''
-            # email_recipient=${{ inputs.email_recipient || 'jinghui.hou@sas.com' }}
+            email_recipient=${{ inputs.email_recipient || 'jinghui.hou@sas.com' }}
           fi
 
           shortened_name=$test_suite
@@ -135,7 +135,7 @@ jobs:
             echo "docker_image=$docker_image"; \
           #   echo "env_variables=$env_variables"; \
             echo "pr_link=$pr_link"; \
-          #   echo "email_recipient=$email_recipient"; \
+            echo "email_recipient=$email_recipient"; \
           }  >> "$GITHUB_OUTPUT"
 
           { \
